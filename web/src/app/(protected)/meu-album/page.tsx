@@ -31,7 +31,6 @@ export default async function InventoryPage() {
       name: sticker.name,
       team: sticker.team_name || sticker.team || '',
       group_name: sticker.group_name || '',
-      category: sticker.category || 'comum',
       owned_quantity: inv?.owned_quantity || 0,
       reserved_quantity: inv?.reserved_quantity || 0,
       is_wanted: inv?.is_wanted || false,

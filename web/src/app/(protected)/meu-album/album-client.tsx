@@ -13,7 +13,6 @@ interface StickerData {
   name: string
   team: string
   group_name: string
-  category: string
   owned_quantity: number
   reserved_quantity: number
   is_wanted: boolean
