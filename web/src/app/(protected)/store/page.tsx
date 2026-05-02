@@ -1,17 +1,21 @@
 import { createClient } from '@/utils/supabase/server'
-import { Package, ExternalLink } from 'lucide-react'
-import { trackClickAndRedirect } from './actions'
+import { Package, Coins, Crown } from 'lucide-react'
+import { createCheckoutSession } from './actions'
+import { Button } from '@/components/ui/button'
 
 export const dynamic = 'force-dynamic'
 
 export default async function StorePage() {
   const supabase = await createClient()
   
-  const { data: packs } = await supabase
-    .from('affiliate_links')
+  const { data: products } = await supabase
+    .from('store_products')
     .select('*')
     .eq('is_active', true)
-    .order('pack_size', { ascending: true })
+    .order('price_brl', { ascending: true })
+
+  const credits = products?.filter(p => p.product_type === 'credits') || []
+  const subscriptions = products?.filter(p => p.product_type === 'subscription') || []
 
   return (
     <div className="p-4 pb-24 min-h-screen">
@@ -21,41 +25,66 @@ export default async function StorePage() {
           <Package className="w-6 h-6 text-primary" />
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Apoie o projeto comprando seus pacotes de figurinhas no Mercado Livre através dos nossos links.
+          Adquira créditos para propor trocas ou torne-se Premium para ter benefícios exclusivos.
         </p>
       </header>
 
-      <div className="space-y-4 animate-in-fade">
-        {packs?.map(pack => (
-          <form action={trackClickAndRedirect} key={pack.id}>
-            <input type="hidden" name="link_id" value={pack.id} />
-            <input type="hidden" name="url" value={pack.url} />
-            <button type="submit" className="w-full text-left">
-              <div className="glass-card p-5 rounded-2xl flex items-center justify-between hover:bg-accent/50 transition-all active:scale-[0.98] group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Package className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-foreground text-lg">{pack.label}</h3>
-                    <p className="text-sm text-secondary font-semibold">{pack.price_text}</p>
-                  </div>
+      {subscriptions.length > 0 && (
+        <section className="mb-8 animate-in-fade">
+          <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+            <Crown className="w-5 h-5 text-yellow-500" /> Assinaturas
+          </h2>
+          <div className="space-y-4">
+            {subscriptions.map(sub => (
+              <div key={sub.id} className="glass-card p-5 rounded-3xl border-2 border-yellow-500/20 bg-yellow-500/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-yellow-500 text-yellow-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl z-10">
+                  Recomendado
                 </div>
-                <div className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all">
-                  <ExternalLink className="w-4 h-4" />
+                <h3 className="font-black text-xl text-foreground mb-1">{sub.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{sub.description}</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-2xl font-black text-foreground">
+                    R$ {sub.price_brl.toFixed(2).replace('.', ',')} <span className="text-sm text-muted-foreground font-medium">/mês</span>
+                  </p>
+                  <form action={createCheckoutSession}>
+                    <input type="hidden" name="productId" value={sub.id} />
+                    <Button type="submit" className="bg-yellow-500 hover:bg-yellow-600 text-yellow-950 font-bold rounded-xl shadow-lg shadow-yellow-500/20">
+                      Assinar
+                    </Button>
+                  </form>
                 </div>
               </div>
-            </button>
-          </form>
-        ))}
-
-        {(!packs || packs.length === 0) && (
-          <div className="text-center py-12 glass-card rounded-3xl">
-            <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground font-medium">Nenhum pacote disponível no momento.</p>
+            ))}
           </div>
-        )}
-      </div>
+        </section>
+      )}
+
+      {credits.length > 0 && (
+        <section className="animate-in-fade" style={{animationDelay: '100ms'}}>
+          <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+            <Coins className="w-5 h-5 text-primary" /> Pacotes de Créditos
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            {credits.map(cred => (
+              <div key={cred.id} className="glass-card p-4 rounded-2xl flex flex-col justify-between border border-primary/10 hover:border-primary/30 transition-colors">
+                <div>
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
+                    <Coins className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground text-sm leading-tight mb-1">{cred.name}</h3>
+                  <p className="text-xs text-muted-foreground mb-4">{cred.description}</p>
+                </div>
+                <form action={createCheckoutSession}>
+                  <input type="hidden" name="productId" value={cred.id} />
+                  <Button type="submit" variant="secondary" className="w-full font-bold text-xs rounded-xl h-10 border border-secondary/20">
+                    Comprar R$ {cred.price_brl.toFixed(2).replace('.', ',')}
+                  </Button>
+                </form>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
