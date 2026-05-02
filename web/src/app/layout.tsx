@@ -13,20 +13,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://figureswap.com'),
   title: {
-    default: "FigureSwap — Troque Figurinhas da Copa",
+    default: "FigureSwap — Match Perfeito de Figurinhas",
     template: "%s | FigureSwap",
   },
   description:
-    "O maior marketplace de figurinhas repetidas da Copa do Mundo. Encontre colecionadores, proponha trocas e complete seu álbum.",
-  keywords: ["figurinhas", "copa do mundo", "troca", "álbum", "colecionador", "marketplace"],
+    "O algoritmo inteligente que encontra quem tem a figurinha que você precisa e quer a figurinha que você tem. Troque figurinhas da Copa com facilidade e segurança.",
+  keywords: ["figurinhas", "copa do mundo", "troca", "álbum", "colecionador", "marketplace", "match"],
   authors: [{ name: "FigureSwap" }],
   openGraph: {
-    title: "FigureSwap — Troque Figurinhas da Copa",
-    description: "Encontre colecionadores e troque figurinhas repetidas facilmente.",
+    title: "FigureSwap — Match Perfeito de Figurinhas",
+    description: "O algoritmo inteligente que encontra quem tem a figurinha que você precisa e quer a figurinha que você tem.",
+    url: "https://figureswap.com",
+    siteName: "FigureSwap",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "FigureSwap",
+      },
+    ],
     type: "website",
     locale: "pt_BR",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "FigureSwap — Match Perfeito de Figurinhas",
+    description: "Pare de perder tempo em listas confusas. Nosso algoritmo encontra a troca perfeita na sua cidade.",
+  }
 };
 
 export const viewport: Viewport = {
