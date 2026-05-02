@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
 const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' }) 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-04-22.dahlia' as any }) 
   : null
 
 // Usamos a chave SERVICE_ROLE para poder atualizar o banco sem o token de sessão do usuário (já que é um webhook rodando em background)

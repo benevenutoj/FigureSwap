@@ -7,7 +7,7 @@ import Stripe from 'stripe'
 // We initialize Stripe here. In production, NEXT_PUBLIC_STRIPE_SECRET_KEY should exist.
 // We use a fallback so it doesn't crash if the user hasn't set it yet.
 const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' }) 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-04-22.dahlia' as any }) 
   : null
 
 export async function createCheckoutSession(formData: FormData) {
