@@ -14,7 +14,8 @@ interface MatchCardProps {
   match_user_name: string
   match_user_state: string
   match_user_city: string
-  match_user_reputation: number
+  match_rating_avg: number
+  match_review_count: number
   they_give: StickerInfo[]
   they_want: StickerInfo[]
 }
@@ -26,7 +27,8 @@ export function MatchCard({
   match_user_name,
   match_user_state,
   match_user_city,
-  match_user_reputation,
+  match_rating_avg,
+  match_review_count,
   they_give,
   they_want,
 }: MatchCardProps) {
@@ -53,7 +55,8 @@ export function MatchCard({
             </span>
             <span className="flex items-center gap-1 text-yellow-500 font-medium">
               <Star className="w-3 h-3 fill-current" />
-              {match_user_reputation.toFixed(1)}
+              {match_rating_avg > 0 ? match_rating_avg.toFixed(1) : 'Novo'} 
+              {match_review_count > 0 && <span className="text-muted-foreground/60 text-[10px]">({match_review_count})</span>}
             </span>
           </div>
         </div>

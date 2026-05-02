@@ -74,3 +74,29 @@ export async function updateStatus(tradeId: string, newStatus: string) {
   revalidatePath(`/trades/${tradeId}`)
   revalidatePath('/inventory') // Inventory might change if scheduled or completed
 }
+
+export async function submitReview(tradeId: string, revieweeId: string, rating: number, comment: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Not authenticated')
+
+  const { error } = await supabase
+    .from('reviews')
+    .insert({
+      trade_id: tradeId,
+      reviewer_id: user.id,
+      reviewee_id: revieweeId,
+      rating: rating,
+      comment: comment
+    })
+
+  if (error) {
+    console.error(error)
+    throw new Error('Erro ao enviar avaliação. Talvez você já tenha avaliado.')
+  }
+
+  revalidatePath(`/trades/${tradeId}`)
+  revalidatePath('/profile')
+  revalidatePath('/explore')
+}

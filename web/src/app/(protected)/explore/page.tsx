@@ -73,7 +73,8 @@ export default async function ExplorePage() {
                 match_user_name={match.match_user_name}
                 match_user_state={match.match_user_state}
                 match_user_city={match.match_user_city}
-                match_user_reputation={match.match_user_reputation}
+                match_rating_avg={match.match_rating_avg}
+                match_review_count={match.match_review_count}
                 they_give={match.they_give}
                 they_want={match.they_want}
               />

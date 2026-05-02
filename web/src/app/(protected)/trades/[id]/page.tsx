@@ -2,8 +2,9 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { updateStatus } from '../actions'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Clock, CheckCircle2, MessageCircle } from 'lucide-react'
+import { ArrowLeft, Clock, CheckCircle2, MessageCircle, Star } from 'lucide-react'
 import Link from 'next/link'
+import { ReviewForm } from './review-form'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,6 +40,21 @@ export default async function TradeDetailsPage({
   const isProposer = trade.proposer_id === user.id
   const otherUser = isProposer ? trade.receiver : trade.proposer
   const status = trade.status
+
+  let hasReviewed = false
+  let givenReview = null
+  if (status === 'completed') {
+    const { data: review } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('trade_id', trade.id)
+      .eq('reviewer_id', user.id)
+      .maybeSingle()
+    if (review) {
+      hasReviewed = true
+      givenReview = review
+    }
+  }
 
   const myItems = trade.items.filter((i: any) => i.sender_id === user.id)
   const theirItems = trade.items.filter((i: any) => i.sender_id === otherUser.id)
@@ -162,6 +178,27 @@ export default async function TradeDetailsPage({
           </>
         )}
       </form>
+
+      {/* Review Section */}
+      {status === 'completed' && !hasReviewed && (
+        <div className="mt-8">
+          <ReviewForm tradeId={trade.id} revieweeId={otherUser.id} revieweeName={otherUser.name} />
+        </div>
+      )}
+
+      {status === 'completed' && hasReviewed && givenReview && (
+        <div className="mt-8 glass-card rounded-2xl p-4 border border-border/50 bg-background/50">
+          <h3 className="text-sm font-bold text-foreground mb-2">Sua Avaliação</h3>
+          <div className="flex items-center gap-1 mb-2">
+            {[1, 2, 3, 4, 5].map(star => (
+              <Star key={star} className={cn("w-4 h-4", givenReview.rating >= star ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground/30")} />
+            ))}
+          </div>
+          {givenReview.comment && (
+            <p className="text-sm text-muted-foreground italic">"{givenReview.comment}"</p>
+          )}
+        </div>
+      )}
     </div>
   )
 }

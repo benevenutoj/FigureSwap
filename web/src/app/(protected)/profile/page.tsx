@@ -20,6 +20,13 @@ export default async function ProfilePage() {
 
   if (!profile) redirect('/onboarding')
 
+  // Get reviews received
+  const { data: reviews } = await supabase
+    .from('reviews')
+    .select('rating, comment, created_at, reviewer:profiles!reviews_reviewer_id_fkey(name)')
+    .eq('reviewee_id', user.id)
+    .order('created_at', { ascending: false })
+
   async function handleLogout() {
     'use server'
     const supabase = await createClient()
@@ -48,8 +55,11 @@ export default async function ProfilePage() {
           <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Reputação</p>
             <p className="text-lg font-black text-yellow-500 flex items-center justify-center gap-1">
-              {profile.reputation_score?.toFixed(1) || '0.0'} <Star className="w-4 h-4 fill-current" />
+              {profile.rating_avg > 0 ? profile.rating_avg.toFixed(1) : 'Novo'} <Star className="w-4 h-4 fill-current" />
             </p>
+            {profile.review_count > 0 && (
+              <p className="text-[10px] text-muted-foreground font-medium mt-0.5">{profile.review_count} avaliações</p>
+            )}
           </div>
           <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Créditos</p>
@@ -103,6 +113,27 @@ export default async function ProfilePage() {
           </div>
         </div>
       </div>
+
+      {reviews && reviews.length > 0 && (
+        <div className="mb-8">
+          <h3 className="font-bold text-foreground mb-3 px-2">Avaliações Recebidas</h3>
+          <div className="space-y-3">
+            {reviews.map((rev: any, index: number) => (
+              <div key={index} className="glass-card rounded-2xl p-4 border border-border/50">
+                <div className="flex justify-between items-start mb-2">
+                  <span className="text-sm font-bold text-foreground">{rev.reviewer.name}</span>
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map(s => (
+                      <Star key={s} className={`w-3 h-3 ${rev.rating >= s ? 'fill-yellow-500 text-yellow-500' : 'text-muted-foreground/30'}`} />
+                    ))}
+                  </div>
+                </div>
+                {rev.comment && <p className="text-sm text-muted-foreground italic">"{rev.comment}"</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form action={handleLogout}>
         <Button 
