@@ -43,6 +43,11 @@ export default async function TradeDetailsPage({
   const myItems = trade.items.filter((i: any) => i.sender_id === user.id)
   const theirItems = trade.items.filter((i: any) => i.sender_id === otherUser.id)
 
+  const myItemsText = myItems.map((i: any) => i.sticker.code).join(', ')
+  const theirItemsText = theirItems.map((i: any) => i.sticker.code).join(', ')
+  const wpText = `Olá ${otherUser.name}, viemos do FigureSwap para combinarmos nossa troca!\nVou te passar: ${myItemsText || 'Nada'}.\nVocê me passa: ${theirItemsText || 'Nada'}.`
+  const wpUrl = `https://wa.me/55${otherUser.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(wpText)}`
+
   async function handleAction(formData: FormData) {
     'use server'
     const newStatus = formData.get('status') as string
@@ -126,7 +131,7 @@ export default async function TradeDetailsPage({
         {status === 'accepted' && (
           <>
             <a 
-              href={`https://wa.me/55${otherUser.whatsapp.replace(/\D/g,'')}?text=Olá ${otherUser.name}, viemos do FigureSwap para combinarmos nossa troca!`}
+              href={wpUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center gap-2 h-10 rounded-md bg-green-500 hover:bg-green-600 text-white font-bold transition-colors"

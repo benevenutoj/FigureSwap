@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { BottomNav } from '@/components/bottom-nav'
+import { NotificationBell } from '@/components/notification-bell'
 
 export default async function ProtectedLayout({
   children,
@@ -27,6 +28,9 @@ export default async function ProtectedLayout({
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-16">
+      <div className="w-full max-w-md mx-auto flex justify-end px-4 pt-4">
+        <NotificationBell userId={user.id} />
+      </div>
       <main className="flex-1 w-full max-w-md mx-auto">
         {children}
       </main>
