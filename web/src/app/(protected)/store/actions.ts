@@ -1,6 +1,3 @@
-'use client'
-// Wait, actions must be 'use server' if they are server actions.
-
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
