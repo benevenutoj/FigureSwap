@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Clock, CheckCircle2, MessageCircle, Star } from 'lucide-react'
 import Link from 'next/link'
 import { ReviewForm } from './review-form'
+import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
