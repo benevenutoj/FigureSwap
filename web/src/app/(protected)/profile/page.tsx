@@ -1,0 +1,97 @@
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { LogOut, User as UserIcon, Star, MapPin, Phone } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
+
+export default async function ProfilePage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) redirect('/login')
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile) redirect('/onboarding')
+
+  async function handleLogout() {
+    'use server'
+    const supabase = await createClient()
+    await supabase.auth.signOut()
+    redirect('/login')
+  }
+
+  return (
+    <div className="p-4 pb-24 min-h-screen">
+      <header className="pt-2 mb-8 flex items-center justify-between">
+        <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
+          Meu Perfil
+        </h1>
+      </header>
+
+      <div className="glass-card rounded-3xl p-6 mb-8 text-center flex flex-col items-center">
+        <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mb-4">
+          <UserIcon className="w-12 h-12 text-primary" />
+        </div>
+        <h2 className="text-2xl font-bold text-foreground">{profile.name}</h2>
+        <p className="text-muted-foreground text-sm flex items-center gap-1 mt-1">
+          <MapPin className="w-4 h-4" /> {profile.city}, {profile.state}
+        </p>
+
+        <div className="flex gap-4 mt-6 w-full">
+          <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
+            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Reputação</p>
+            <p className="text-lg font-black text-yellow-500 flex items-center justify-center gap-1">
+              {profile.reputation_score.toFixed(1)} <Star className="w-4 h-4 fill-current" />
+            </p>
+          </div>
+          <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
+            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Status</p>
+            <p className="text-sm font-bold text-primary mt-1">
+              {profile.is_premium ? 'Premium' : 'Gratuito'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="glass-card rounded-3xl p-6 mb-8 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-secondary/10 rounded-xl text-secondary">
+            <Phone className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">WhatsApp</p>
+            <p className="text-sm font-medium text-foreground">{profile.whatsapp}</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-xl text-primary">
+            <UserIcon className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">E-mail de acesso</p>
+            <p className="text-sm font-medium text-foreground">{user.email}</p>
+          </div>
+        </div>
+      </div>
+
+      <form action={handleLogout}>
+        <Button 
+          type="submit" 
+          variant="destructive" 
+          size="lg" 
+          className="w-full h-14 text-lg font-bold rounded-xl shadow-lg hover:shadow-destructive/40 flex items-center justify-center gap-2"
+        >
+          <LogOut className="w-5 h-5" />
+          Sair da Conta
+        </Button>
+      </form>
+    </div>
+  )
+}
