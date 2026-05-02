@@ -92,7 +92,7 @@ export function ExploreClient({ initialMatches, topWanted, credits: initialCredi
           </h2>
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
             {topWanted.map((item, index) => (
-              <div key={item.sticker_id} className="min-w-[150px] min-h-[100px] glass-card p-4 rounded-2xl border border-orange-500/10 bg-orange-500/5 relative shrink-0 flex flex-col justify-between">
+              <div key={item.sticker_id} className="min-w-[170px] min-h-[130px] glass-card p-4 rounded-2xl border border-orange-500/10 bg-orange-500/5 relative shrink-0 flex flex-col justify-between">
                 <div className="absolute -top-2 -left-2 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">
                   {index + 1}
                 </div>
