@@ -6,13 +6,13 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-04-22.dahlia' as any }) 
   : null
 
-// Usamos a chave SERVICE_ROLE para poder atualizar o banco sem o token de sessão do usuário (já que é um webhook rodando em background)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
-
 export async function POST(req: Request) {
   if (!stripe) return new NextResponse('Stripe disabled', { status: 200 })
+
+  // Instanciamos o supabase aqui para evitar erros no build-time da Vercel quando a ENV não existe
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co'
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'dummy_key'
+  const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
   const body = await req.text()
   const sig = req.headers.get('stripe-signature') as string
