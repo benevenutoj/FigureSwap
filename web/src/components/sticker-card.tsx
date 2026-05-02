@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { Plus, Minus, Star, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { updateOwnedQuantity, toggleWantedSticker } from '@/app/(protected)/inventory/actions'
+import { updateOwnedQuantity, toggleWantedSticker } from '@/app/(protected)/meu-album/actions'
 
 interface StickerCardProps {
   id: string
