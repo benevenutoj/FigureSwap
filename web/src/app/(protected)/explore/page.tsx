@@ -19,9 +19,10 @@ export default async function ExplorePage() {
   // 2. Puxa o Top 5 mais desejadas
   const { data: topWanted } = await supabase.rpc('get_top_wanted_stickers')
 
-  // 3. Puxa os créditos do perfil
-  const { data: profile } = await supabase.from('profiles').select('credits').eq('id', user.id).single()
+  // 3. Puxa os créditos e status premium do perfil
+  const { data: profile } = await supabase.from('profiles').select('credits, is_premium').eq('id', user.id).single()
   const credits = profile?.credits || 0
+  const isPremium = profile?.is_premium || false
 
   // Embaralha levemente os matches perfeitos
   const displayMatches = matches ? [...matches].sort(() => Math.random() - 0.5) : []
@@ -55,7 +56,8 @@ export default async function ExplorePage() {
           initialMatches={displayMatches} 
           topWanted={displayTopWanted} 
           credits={credits} 
-          userId={user.id} 
+          userId={user.id}
+          isPremium={isPremium}
         />
       )}
     </div>

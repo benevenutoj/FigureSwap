@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Plus, Minus, Star, Loader2 } from 'lucide-react'
+import { Plus, Minus, Loader2, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { updateOwnedQuantity, toggleWantedSticker } from '@/app/(protected)/meu-album/actions'
 
@@ -67,18 +67,22 @@ export function StickerCard({
   return (
     <div className="glass-card p-4 rounded-2xl flex items-center justify-between gap-4 transition-all">
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
           <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-primary/20 text-primary uppercase tracking-wider">
             {code}
           </span>
           <button 
             onClick={handleToggleWanted}
+            disabled={isPending}
             className={cn(
-              "p-1 rounded-full transition-colors",
-              wanted ? "text-yellow-500" : "text-muted-foreground hover:text-yellow-500"
+              "flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all border",
+              wanted 
+                ? "bg-red-500/15 text-red-500 border-red-500/30" 
+                : "bg-muted/50 text-muted-foreground border-border/50 hover:border-red-400/50 hover:text-red-400"
             )}
           >
-            <Star className={cn("w-4 h-4", wanted && "fill-current")} />
+            <Heart className={cn("w-3 h-3", wanted && "fill-current")} />
+            {wanted ? 'Quero ✓' : 'Quero'}
           </button>
         </div>
         <h3 className="text-sm font-semibold text-foreground truncate">{name}</h3>

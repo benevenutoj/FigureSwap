@@ -2,16 +2,15 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Compass, Search, Repeat, User, Package } from 'lucide-react'
+import { Compass, BookOpen, Repeat, Package, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function BottomNav() {
   const pathname = usePathname()
 
   const navItems = [
-    { name: 'Home', href: '/', icon: Home },
     { name: 'Explorar', href: '/explore', icon: Compass },
-    { name: 'Meu Álbum', href: '/meu-album', icon: Search },
+    { name: 'Meu Álbum', href: '/meu-album', icon: BookOpen },
     { name: 'Trocas', href: '/trades', icon: Repeat },
     { name: 'Loja', href: '/store', icon: Package },
     { name: 'Perfil', href: '/profile', icon: User },
@@ -21,7 +20,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50 pb-safe">
       <ul className="flex items-center justify-around h-16">
         {navItems.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
           const Icon = item.icon
           return (
             <li key={item.name} className="flex-1">

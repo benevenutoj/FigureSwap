@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { StickerCard } from '@/components/sticker-card'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface StickerData {
   id: string
@@ -52,13 +52,13 @@ export function AlbumClient({ stickers }: AlbumClientProps) {
       res = res.filter(s => s.team === selectedTeam)
     }
     
-    if (activeTab === 'owned') {
-      res = res.filter(s => s.owned_quantity > 0)
-    } else if (activeTab === 'wanted') {
-      res = res.filter(s => s.is_wanted)
+    switch (activeTab) {
+      case 'owned':      return res.filter(s => s.owned_quantity === 1)   // Possuídas: exatamente 1
+      case 'repeated':   return res.filter(s => s.owned_quantity > 1)     // Repetidas: mais de 1
+      case 'missing':    return res.filter(s => s.owned_quantity === 0)   // Faltantes: nenhuma
+      case 'wanted':     return res.filter(s => s.is_wanted)              // Desejadas: marcadas como quero
+      default:           return res                                         // Todas
     }
-    
-    return res
   }, [stickers, query, selectedGroup, selectedTeam, activeTab])
 
   // Completude Metrics
@@ -70,11 +70,13 @@ export function AlbumClient({ stickers }: AlbumClientProps) {
   if (selectedTeam !== 'all') {
     const teamStickers = stickers.filter(s => s.team === selectedTeam)
     const teamOwned = teamStickers.filter(s => s.owned_quantity > 0).length
-    contextualMetrics = { label: selectedTeam, owned: teamOwned, total: teamStickers.length }
+    const teamPct = teamStickers.length === 0 ? 0 : Math.round((teamOwned / teamStickers.length) * 100)
+    contextualMetrics = { label: selectedTeam, owned: teamOwned, total: teamStickers.length, pct: teamPct }
   } else if (selectedGroup !== 'all') {
     const groupStickers = stickers.filter(s => s.group_name === selectedGroup)
     const groupOwned = groupStickers.filter(s => s.owned_quantity > 0).length
-    contextualMetrics = { label: selectedGroup, owned: groupOwned, total: groupStickers.length }
+    const groupPct = groupStickers.length === 0 ? 0 : Math.round((groupOwned / groupStickers.length) * 100)
+    contextualMetrics = { label: selectedGroup, owned: groupOwned, total: groupStickers.length, pct: groupPct }
   }
 
   return (
@@ -89,6 +91,7 @@ export function AlbumClient({ stickers }: AlbumClientProps) {
           <div className="w-full bg-secondary/20 h-1.5 rounded-full mt-2 overflow-hidden">
             <div className="bg-primary h-full rounded-full transition-all" style={{ width: `${percentage}%` }} />
           </div>
+          <p className="text-[10px] text-muted-foreground mt-1 font-medium">{percentage}% completo</p>
         </div>
         
         {contextualMetrics && (
@@ -100,9 +103,10 @@ export function AlbumClient({ stickers }: AlbumClientProps) {
             <div className="w-full bg-secondary/20 h-1.5 rounded-full mt-2 overflow-hidden">
               <div 
                 className="bg-foreground h-full rounded-full transition-all" 
-                style={{ width: `${Math.round((contextualMetrics.owned / contextualMetrics.total) * 100)}%` }} 
+                style={{ width: `${contextualMetrics.pct}%` }} 
               />
             </div>
+            <p className="text-[10px] text-muted-foreground mt-1 font-medium">{contextualMetrics.pct}% completo</p>
           </div>
         )}
       </div>
@@ -143,11 +147,14 @@ export function AlbumClient({ stickers }: AlbumClientProps) {
         </div>
       </div>
 
+      {/* Tabs de status */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 h-12 rounded-xl bg-background/50 glass-card border border-border/50 mb-6">
-          <TabsTrigger value="all" className="rounded-lg">Todas</TabsTrigger>
-          <TabsTrigger value="owned" className="rounded-lg">Repetidas</TabsTrigger>
-          <TabsTrigger value="wanted" className="rounded-lg">Faltantes</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-5 h-11 rounded-xl bg-background/50 glass-card border border-border/50 mb-4">
+          <TabsTrigger value="all" className="rounded-lg text-[10px] font-bold">Todas</TabsTrigger>
+          <TabsTrigger value="owned" className="rounded-lg text-[10px] font-bold">1x</TabsTrigger>
+          <TabsTrigger value="repeated" className="rounded-lg text-[10px] font-bold">Repetidas</TabsTrigger>
+          <TabsTrigger value="missing" className="rounded-lg text-[10px] font-bold">Faltantes</TabsTrigger>
+          <TabsTrigger value="wanted" className="rounded-lg text-[10px] font-bold">Desejadas</TabsTrigger>
         </TabsList>
 
         <div className="space-y-3">

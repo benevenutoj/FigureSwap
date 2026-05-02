@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { LogOut, User as UserIcon, Star, MapPin, Phone, Coins, Gift } from 'lucide-react'
 import { CopyButton } from './copy-button'
+import { ShareButton } from './share-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -88,7 +89,10 @@ export default async function ProfilePage() {
           <span className="text-sm font-mono text-foreground font-medium truncate flex-1 text-left select-all">
             {profile.referral_code}
           </span>
-          <CopyButton code={profile.referral_code} />
+          <div className="flex items-center gap-2">
+            <CopyButton code={profile.referral_code} />
+            <ShareButton referralCode={profile.referral_code} />
+          </div>
         </div>
       </div>
 

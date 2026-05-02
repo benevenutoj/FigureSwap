@@ -47,7 +47,7 @@ export default async function LandingPage() {
           </h1>
           
           <p className="text-muted-foreground text-lg px-2">
-            Cadastre suas repetidas, informe as que faltam e deixe nosso algoritmo encontrar a troca perfeita na sua cidade.
+            Cadastre suas figurinhas repetidas, informe as que faltam e deixe nosso algoritmo encontrar a troca perfeita na sua cidade.
           </p>
 
           <div className="pt-4 flex flex-col gap-3">
