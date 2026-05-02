@@ -33,14 +33,14 @@ export default async function TradesPage() {
 
   const getStatusInfo = (status: string) => {
     switch(status) {
-      case 'pending': return { label: 'Pendente', icon: Clock, color: 'text-yellow-500', bg: 'bg-yellow-500/10' }
+      case 'pending': return { label: 'Proposta Enviada', icon: Clock, color: 'text-yellow-500', bg: 'bg-yellow-500/10' }
       case 'accepted': return { label: 'Aceita', icon: CheckCircle2, color: 'text-primary', bg: 'bg-primary/10' }
       case 'scheduled': return { label: 'Agendada', icon: Clock, color: 'text-blue-500', bg: 'bg-blue-500/10' }
-      case 'awaiting_confirmation': return { label: 'Aguardando Conf.', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' }
+      case 'awaiting_confirmation': return { label: 'Aguardando Confirmação', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' }
       case 'completed': return { label: 'Concluída', icon: CheckCircle2, color: 'text-secondary', bg: 'bg-secondary/10' }
-      case 'cancelled': 
-      case 'rejected': 
-      case 'expired': return { label: 'Cancelada/Rejeitada', icon: XCircle, color: 'text-destructive', bg: 'bg-destructive/10' }
+      case 'expired': return { label: 'Expirada', icon: XCircle, color: 'text-muted-foreground', bg: 'bg-muted' }
+      case 'cancelled': return { label: 'Cancelada', icon: XCircle, color: 'text-destructive', bg: 'bg-destructive/10' }
+      case 'rejected': return { label: 'Recusada', icon: XCircle, color: 'text-destructive', bg: 'bg-destructive/10' }
       default: return { label: status, icon: Clock, color: 'text-muted-foreground', bg: 'bg-muted' }
     }
   }

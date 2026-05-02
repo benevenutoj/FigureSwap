@@ -90,9 +90,9 @@ export function ExploreClient({ initialMatches, topWanted, credits: initialCredi
           <h2 className="text-lg font-black text-foreground mb-3 flex items-center gap-2">
             <Flame className="w-5 h-5 text-orange-500" /> Em Alta
           </h2>
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
+          <div className="flex gap-3 overflow-x-auto pb-4 pt-4 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {topWanted.map((item, index) => (
-              <div key={item.sticker_id} className="min-w-[170px] min-h-[130px] glass-card p-4 rounded-2xl border border-orange-500/10 bg-orange-500/5 relative shrink-0 flex flex-col justify-between">
+              <div key={item.sticker_id} className="w-[160px] min-h-[150px] glass-card p-4 pt-5 rounded-3xl border border-orange-500/10 bg-orange-500/5 relative shrink-0 flex flex-col justify-between shadow-sm">
                 <div className="absolute -top-2 -left-2 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">
                   {index + 1}
                 </div>

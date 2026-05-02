@@ -91,7 +91,16 @@ export default async function TradeDetailsPage({
           <Clock className="w-8 h-8 text-primary" />
         )}
         <div>
-          <h2 className="font-bold text-foreground uppercase tracking-wider text-sm">Status: {status}</h2>
+          <h2 className="font-bold text-foreground tracking-wide text-sm">
+            {status === 'pending' && 'Proposta Enviada'}
+            {status === 'accepted' && 'Aceita'}
+            {status === 'scheduled' && 'Agendada'}
+            {status === 'awaiting_confirmation' && 'Aguardando Confirmação'}
+            {status === 'completed' && 'Concluída'}
+            {status === 'cancelled' && 'Cancelada'}
+            {status === 'rejected' && 'Recusada'}
+            {status === 'expired' && 'Expirada'}
+          </h2>
           <p className="text-xs text-muted-foreground">
             {status === 'pending' && 'Aguardando aceite da proposta.'}
             {status === 'accepted' && 'Proposta aceita! Combinem pelo WhatsApp.'}
