@@ -7,11 +7,11 @@ ALTER TABLE stickers ADD COLUMN IF NOT EXISTS team_name TEXT;
 -- 2. Wipe old dummy data 
 DELETE FROM trade_items;
 DELETE FROM trades;
-DELETE FROM inventory;
+DELETE FROM user_inventory;
 DELETE FROM stickers;
 
 -- 3. Insert real data
-INSERT INTO stickers (code, name, rarity, team_name, group_name) VALUES
+INSERT INTO stickers (code, name, category, team_name, group_name) VALUES
 ('MEX-1', 'Luis Malagón', 'comum', 'México', 'Grupo A'),
 ('MEX-2', 'Johan Vásquez', 'comum', 'México', 'Grupo A'),
 ('MEX-3', 'Jorge Sánchez', 'comum', 'México', 'Grupo A'),
