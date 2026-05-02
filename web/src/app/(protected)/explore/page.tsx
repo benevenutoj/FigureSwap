@@ -1,7 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
-import { MatchCard } from '@/components/match-card'
 import { Compass, Coins } from 'lucide-react'
-import { RerollButton } from './reroll-button'
+import { ExploreClient } from './explore-client'
 
 // Força o Next.js a sempre rodar dinamicamente esta rota
 export const dynamic = 'force-dynamic'
@@ -12,17 +11,21 @@ export default async function ExplorePage() {
 
   if (!user) return null
 
-  // Chama a função RPC criada no banco de dados para o motor de matching
+  // 1. Puxa os matches perfeitos
   const { data: matches, error } = await supabase.rpc('get_user_matches', {
     p_user_id: user.id
   })
 
-  // Fetch profile credits
+  // 2. Puxa o Top 5 mais desejadas
+  const { data: topWanted } = await supabase.rpc('get_top_wanted_stickers')
+
+  // 3. Puxa os créditos do perfil
   const { data: profile } = await supabase.from('profiles').select('credits').eq('id', user.id).single()
   const credits = profile?.credits || 0
 
-  // Embaralha levemente para dar o efeito de Re-roll
+  // Embaralha levemente os matches perfeitos
   const displayMatches = matches ? [...matches].sort(() => Math.random() - 0.5) : []
+  const displayTopWanted = topWanted || []
 
   return (
     <div className="p-4 pb-24 min-h-screen">
@@ -37,51 +40,24 @@ export default async function ExplorePage() {
           </div>
         </div>
         <p className="text-muted-foreground text-sm">
-          Encontramos esses colecionadores compatíveis com o seu inventário.
+          Descubra figurinhas, encontre colecionadores e faça trocas.
         </p>
       </header>
 
-      {displayMatches.length > 0 && (
-        <div className="mb-6">
-          <RerollButton credits={credits} />
+      {error && (
+        <div className="p-4 bg-destructive/10 text-destructive rounded-xl text-center text-sm mb-6">
+          Erro ao carregar dados do Explorar.
         </div>
       )}
 
-      <section>
-        {error && (
-          <div className="p-4 bg-destructive/10 text-destructive rounded-xl text-center text-sm">
-            Erro ao carregar matches.
-          </div>
-        )}
-
-        {!error && (!matches || matches.length === 0) ? (
-          <div className="glass-card rounded-3xl p-8 text-center flex flex-col items-center justify-center mt-10">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              <Compass className="w-8 h-8 text-muted-foreground opacity-50" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">Nenhum Match Encontrado</h3>
-            <p className="text-sm text-muted-foreground">
-              Continue adicionando figurinhas repetidas e faltantes no seu Inventário para encontrar outros colecionadores.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {displayMatches?.map((match: any) => (
-              <MatchCard 
-                key={match.match_user_id}
-                match_user_id={match.match_user_id}
-                match_user_name={match.match_user_name}
-                match_user_state={match.match_user_state}
-                match_user_city={match.match_user_city}
-                match_rating_avg={match.match_rating_avg}
-                match_review_count={match.match_review_count}
-                they_give={match.they_give}
-                they_want={match.they_want}
-              />
-            ))}
-          </div>
-        )}
-      </section>
+      {!error && (
+        <ExploreClient 
+          initialMatches={displayMatches} 
+          topWanted={displayTopWanted} 
+          credits={credits} 
+          userId={user.id} 
+        />
+      )}
     </div>
   )
 }
