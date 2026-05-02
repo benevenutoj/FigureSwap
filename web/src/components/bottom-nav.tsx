@@ -11,7 +11,7 @@ export function BottomNav() {
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Explorar', href: '/explore', icon: Compass },
-    { name: 'Inventário', href: '/inventory', icon: Search },
+    { name: 'Meu Álbum', href: '/inventory', icon: Search },
     { name: 'Trocas', href: '/trades', icon: Repeat },
     { name: 'Loja', href: '/store', icon: Package },
     { name: 'Perfil', href: '/profile', icon: User },

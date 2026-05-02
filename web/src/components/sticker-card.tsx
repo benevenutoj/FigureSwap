@@ -10,6 +10,8 @@ interface StickerCardProps {
   sticker_id: string
   code: string
   name: string
+  team?: string
+  group_name?: string
   owned_quantity: number
   reserved_quantity: number
   is_wanted: boolean
@@ -20,6 +22,8 @@ export function StickerCard({
   sticker_id,
   code,
   name,
+  team,
+  group_name,
   owned_quantity,
   reserved_quantity,
   is_wanted,
@@ -78,6 +82,11 @@ export function StickerCard({
           </button>
         </div>
         <h3 className="text-sm font-semibold text-foreground truncate">{name}</h3>
+        {team && (
+          <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
+            {team} • {group_name}
+          </p>
+        )}
         
         {reserved_quantity > 0 && (
           <p className="text-[10px] text-destructive mt-1 font-medium">
