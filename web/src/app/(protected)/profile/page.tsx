@@ -1,7 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { LogOut, User as UserIcon, Star, MapPin, Phone } from 'lucide-react'
+import { LogOut, User as UserIcon, Star, MapPin, Phone, Coins, Gift } from 'lucide-react'
+import { CopyButton } from './copy-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -43,19 +44,41 @@ export default async function ProfilePage() {
           <MapPin className="w-4 h-4" /> {profile.city}, {profile.state}
         </p>
 
-        <div className="flex gap-4 mt-6 w-full">
+        <div className="flex gap-2 mt-6 w-full">
           <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Reputação</p>
             <p className="text-lg font-black text-yellow-500 flex items-center justify-center gap-1">
-              {profile.reputation_score.toFixed(1)} <Star className="w-4 h-4 fill-current" />
+              {profile.reputation_score?.toFixed(1) || '0.0'} <Star className="w-4 h-4 fill-current" />
+            </p>
+          </div>
+          <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
+            <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Créditos</p>
+            <p className="text-lg font-black text-blue-500 flex items-center justify-center gap-1">
+              {profile.credits} <Coins className="w-4 h-4" />
             </p>
           </div>
           <div className="flex-1 bg-background/50 rounded-2xl p-3 border border-border/50">
             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Status</p>
             <p className="text-sm font-bold text-primary mt-1">
-              {profile.is_premium ? 'Premium' : 'Gratuito'}
+              {profile.is_premium ? 'Premium' : 'Free'}
             </p>
           </div>
+        </div>
+      </div>
+
+      <div className="glass-card rounded-3xl p-6 mb-8 text-center bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/20">
+        <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
+          <Gift className="w-6 h-6 text-primary" />
+        </div>
+        <h3 className="font-bold text-foreground mb-1">Convide e Ganhe</h3>
+        <p className="text-xs text-muted-foreground mb-4">
+          Ganhe <strong className="text-primary">+2 créditos</strong> por cada amigo que se cadastrar pelo seu link e preencher o deck inicial.
+        </p>
+        <div className="bg-background border border-border rounded-xl p-3 flex items-center justify-between gap-2">
+          <span className="text-sm font-mono text-foreground font-medium truncate flex-1 text-left select-all">
+            {profile.referral_code}
+          </span>
+          <CopyButton code={profile.referral_code} />
         </div>
       </div>
 

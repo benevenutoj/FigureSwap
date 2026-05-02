@@ -27,6 +27,13 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // Capturar referral code da URL
+  const refCode = request.nextUrl.searchParams.get('ref')
+  if (refCode) {
+    // Salvar no cookie por 30 dias
+    supabaseResponse.cookies.set('fs_referral', refCode, { maxAge: 60 * 60 * 24 * 30, path: '/' })
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser()

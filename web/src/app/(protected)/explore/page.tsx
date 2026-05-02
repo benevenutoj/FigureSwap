@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { MatchCard } from '@/components/match-card'
-import { Compass } from 'lucide-react'
+import { Compass, Coins } from 'lucide-react'
+import { RerollButton } from './reroll-button'
 
 // Força o Next.js a sempre rodar dinamicamente esta rota
 export const dynamic = 'force-dynamic'
@@ -16,17 +17,35 @@ export default async function ExplorePage() {
     p_user_id: user.id
   })
 
+  // Fetch profile credits
+  const { data: profile } = await supabase.from('profiles').select('credits').eq('id', user.id).single()
+  const credits = profile?.credits || 0
+
+  // Embaralha levemente para dar o efeito de Re-roll
+  const displayMatches = matches ? [...matches].sort(() => Math.random() - 0.5) : []
+
   return (
     <div className="p-4 pb-24 min-h-screen">
-      <header className="pt-2 mb-8">
-        <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
-          Explorar
-          <Compass className="w-6 h-6 text-primary" />
-        </h1>
-        <p className="text-muted-foreground text-sm mt-1">
+      <header className="pt-2 mb-6">
+        <div className="flex items-center justify-between mb-1">
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
+            Explorar
+            <Compass className="w-6 h-6 text-primary" />
+          </h1>
+          <div className="bg-primary/10 text-primary px-3 py-1 rounded-full font-bold flex items-center gap-1.5 text-sm">
+            {credits} <Coins className="w-4 h-4" />
+          </div>
+        </div>
+        <p className="text-muted-foreground text-sm">
           Encontramos esses colecionadores compatíveis com o seu inventário.
         </p>
       </header>
+
+      {displayMatches.length > 0 && (
+        <div className="mb-6">
+          <RerollButton credits={credits} />
+        </div>
+      )}
 
       <section>
         {error && (
@@ -47,7 +66,7 @@ export default async function ExplorePage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {matches?.map((match: any) => (
+            {displayMatches?.map((match: any) => (
               <MatchCard 
                 key={match.match_user_id}
                 match_user_id={match.match_user_id}
