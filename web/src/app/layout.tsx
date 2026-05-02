@@ -13,26 +13,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://figureswap.com'),
+  metadataBase: new URL('https://copatroca.com'),
   title: {
-    default: "FigureSwap — Match Perfeito de Figurinhas",
-    template: "%s | FigureSwap",
+    default: "CopaTroca — Match Perfeito de Figurinhas",
+    template: "%s | CopaTroca",
   },
   description:
     "O algoritmo inteligente que encontra quem tem a figurinha que você precisa e quer a figurinha que você tem. Troque figurinhas da Copa com facilidade e segurança.",
-  keywords: ["figurinhas", "copa do mundo", "troca", "álbum", "colecionador", "marketplace", "match"],
-  authors: [{ name: "FigureSwap" }],
+  keywords: ["figurinhas", "copa do mundo", "troca", "álbum", "colecionador", "marketplace", "match", "copatroca"],
+  authors: [{ name: "CopaTroca" }],
   openGraph: {
-    title: "FigureSwap — Match Perfeito de Figurinhas",
+    title: "CopaTroca — Match Perfeito de Figurinhas",
     description: "O algoritmo inteligente que encontra quem tem a figurinha que você precisa e quer a figurinha que você tem.",
-    url: "https://figureswap.com",
-    siteName: "FigureSwap",
+    url: "https://copatroca.com",
+    siteName: "CopaTroca",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "FigureSwap",
+        alt: "CopaTroca",
       },
     ],
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FigureSwap — Match Perfeito de Figurinhas",
+    title: "CopaTroca — Match Perfeito de Figurinhas",
     description: "Pare de perder tempo em listas confusas. Nosso algoritmo encontra a troca perfeita na sua cidade.",
   }
 };

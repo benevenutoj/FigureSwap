@@ -47,49 +47,59 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Base Light Mode - Clean and elegant */
+/* CopaTroca Base Light Mode - Clean and vibrant */
 :root {
-  --background: oklch(0.98 0.01 240);
-  --foreground: oklch(0.15 0.02 240);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 240);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 240);
-  --primary: oklch(0.45 0.2 260); /* Vibrant Deep Purple/Blue */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.9 0.05 140); /* Electric Green Hint */
-  --secondary-foreground: oklch(0.2 0.05 140);
-  --muted: oklch(0.95 0.01 240);
-  --muted-foreground: oklch(0.5 0.02 240);
-  --accent: oklch(0.95 0.01 240);
-  --accent-foreground: oklch(0.15 0.02 240);
-  --destructive: oklch(0.6 0.2 25);
-  --border: oklch(0.9 0.02 240);
-  --input: oklch(0.9 0.02 240);
-  --ring: oklch(0.45 0.2 260);
+  --background: #f8fafc; /* Branco gelo para destacar os cards */
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  --primary: #FFD700; /* Amarelo Vibrante */
+  --primary-foreground: #000000; /* Texto preto no botão amarelo para contraste */
+  
+  --secondary: #3CAC3B; /* Verde Campo */
+  --secondary-foreground: #ffffff;
+  
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  
+  --accent: #2A398D; /* Azul Unido */
+  --accent-foreground: #ffffff;
+  
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #FFD700;
   --radius: 1rem;
 }
 
-/* Premium Dark Mode - Deep rich background, glassmorphism ready */
+/* Premium Dark Mode - CopaTroca Night */
 .dark {
-  --background: oklch(0.12 0.02 260); /* Deep rich space blue/black */
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.16 0.03 260); /* Slightly lighter for cards */
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.16 0.03 260);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.2 260); /* Bright Neon Blue/Purple */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.8 0.15 140); /* Vibrant Neon Green */
-  --secondary-foreground: oklch(0.1 0.05 140);
-  --muted: oklch(0.2 0.03 260);
-  --muted-foreground: oklch(0.7 0.02 260);
-  --accent: oklch(0.25 0.05 260);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.5 0.2 25);
-  --border: oklch(0.25 0.05 260);
-  --input: oklch(0.2 0.03 260);
-  --ring: oklch(0.65 0.2 260);
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  
+  --primary: #FFD700;
+  --primary-foreground: #000000;
+  
+  --secondary: #3CAC3B;
+  --secondary-foreground: #ffffff;
+  
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  
+  --accent: #2A398D;
+  --accent-foreground: #ffffff;
+  
+  --destructive: #ef4444;
+  --border: #334155;
+  --input: #334155;
+  --ring: #FFD700;
 }
 
 @layer base {

@@ -23,8 +23,8 @@ export default async function LandingPage() {
 
       {/* Header */}
       <header className="w-full max-w-md mx-auto p-4 flex items-center justify-between z-10">
-        <div className="font-black text-2xl text-primary tracking-tighter">
-          Figure<span className="text-foreground">Swap</span>
+        <div className="font-black text-2xl text-accent tracking-tighter">
+          Copa<span className="text-primary">Troca</span>
         </div>
         <Link href="/login">
           <Button variant="secondary" size="sm" className="font-bold rounded-full bg-secondary/20 hover:bg-secondary/30 text-secondary border border-secondary/30">
@@ -107,7 +107,7 @@ export default async function LandingPage() {
       </main>
 
       <footer className="p-8 text-center text-xs text-muted-foreground mt-12 z-10 w-full">
-        <p>© {new Date().getFullYear()} FigureSwap. Todos os direitos reservados.</p>
+        <p>© {new Date().getFullYear()} CopaTroca. Todos os direitos reservados.</p>
       </footer>
     </div>
   )

@@ -62,7 +62,7 @@ export default async function TradeDetailsPage({
 
   const myItemsText = myItems.map((i: any) => i.sticker.code).join(', ')
   const theirItemsText = theirItems.map((i: any) => i.sticker.code).join(', ')
-  const wpText = `Olá ${otherUser.name}, viemos do FigureSwap para combinarmos nossa troca!\nVou te passar: ${myItemsText || 'Nada'}.\nVocê me passa: ${theirItemsText || 'Nada'}.`
+  const wpText = `Olá ${otherUser.name}, viemos do CopaTroca para combinarmos nossa troca!\nVou te passar: ${myItemsText || 'Nada'}.\nVocê me passa: ${theirItemsText || 'Nada'}.`
   const wpUrl = `https://wa.me/55${otherUser.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(wpText)}`
 
   async function handleAction(formData: FormData) {
